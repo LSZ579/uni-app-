@@ -2,7 +2,7 @@
 	<view class="tmp-box">
 		<view class='filterBox'>
 			<view class='filter-input'>
-				<image class='filterImg' src='./filter.png'></image>
+				<text class='iconfont icon-guanbi'></text>
 				<input class="text" type='text' v-model="inputVal" confirm-type="搜索" @confirm='handleFllter' placeholder='搜索'></input>
 			</view>
 		</view>
@@ -60,4 +60,5 @@
 			}
 		}
 	}
+	@import url("../../css/icon.css");
 </style>

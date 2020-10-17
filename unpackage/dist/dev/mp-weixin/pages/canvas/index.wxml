@@ -1,0 +1,4 @@
+<!--pages/canvas/index.wxml-->
+<view class="can">
+  <canvas style="width:100vw;height:100vh"  canvas-id="canvas" id="can" bindtouchstart="start" bindtouchmove="move" bindtouchend="end" ></canvas>
+</view>

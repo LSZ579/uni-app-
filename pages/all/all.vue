@@ -11,15 +11,7 @@
 	export default {
 		data() {
 			return {
-				query:[
-					{
-						id: 6666998,
-						name: "校长",
-						pid: "-1",
-						user: false,
-						checked:true
-						}
-				],
+				query:[],
 				detail:{
 					userIds:[],
 					organizeIds:[]

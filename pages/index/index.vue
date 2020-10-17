@@ -22,7 +22,7 @@
 									children: [{
 										children: [{
 											children: [{
-													children: "",
+													children: [],
 													id: "10",
 													name: "学生b挥",
 													pid: "",
@@ -31,7 +31,7 @@
 												},
 
 												{
-													children: "",
+													children: [],
 													id: "1281778375907655681",
 													name: "学生",
 													checked: false,
@@ -39,7 +39,7 @@
 													user: true
 												},
 												{
-													children: "",
+													children: [],
 													id: 9965,
 													name: "小陆",
 													checked: false,
@@ -48,7 +48,7 @@
 												},
 												{
 													children: [{
-														children: "",
+														children: [],
 														id: 26,
 														checked: false,
 														name: "学生a",
@@ -92,13 +92,13 @@
 										children: [],
 										id: 1566,
 										checked: false,
-										name: "ni党总支",
+										name: "学生",
 										pid: "14",
-										user: false
+										user: true
 									}],
 									id: 1455,
 									checked: false,
-									name: "mi机构党委",
+									name: "班长",
 									pid: "13",
 									user: false
 								}],
@@ -133,21 +133,22 @@
 					}
 				],
 				checkList: [],
-				prop:{
-					label:'name',
-					children:'children'
+				prop: {
+					label: 'name',
+					children: 'children',
+					multiple:false
 				}
 			}
 		},
 		onLoad(o) {
 			var that = this
-			that.checkList = JSON.parse(o.item),
+			that.checkList = JSON.parse(o.item)
 			that.checks()
 		},
 		methods: {
 			//检查默认选中,要是字段钟本身包含了checked字段就不需要这个
-			checks(){
-				var that=this;
+			checks() {
+				var that = this;
 				for (var i = 0, len = that.tree.length; i < len; i++) {
 					for (var j = 0, lens = that.checkList.length; j < lens; j++) {
 						if (that.checkList[j].id === that.tree[i].id) {
@@ -161,23 +162,24 @@
 			},
 			//获取选中的
 			confirm(val) {
-				this.checkList=val
+				this.checkList = val
+				console.log(this.checkList,588)
 			},
-			backConfirm(){
-			var pages = getCurrentPages();
-			var currPage = pages[pages.length - 1]; //当前页面
-			var prevPage = pages[pages.length - 2]; //上一个页面
-			//h5写法
-			prevPage.query =this.checkList
-			//小程序写法
-			//prevPage.$vm.query =this.checkList
-			uni.navigateBack();
-		}
+			backConfirm() {
+				var pages = getCurrentPages();
+				var currPage = pages[pages.length - 1]; //当前页面
+				var prevPage = pages[pages.length - 2]; //上一个页面
+				//h5写法
+				prevPage.query = this.checkList
+				//小程序写法
+				//prevPage.$vm.query =this.checkList
+				uni.navigateBack();
+			}
 		}
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.box_sizing {
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
