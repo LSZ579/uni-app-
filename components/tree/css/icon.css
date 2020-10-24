@@ -1,20 +1,42 @@
-
-	@font-face {
-	  font-family: 'iconfont';  /* project id 2009600 */
-	  src: url('https://at.alicdn.com/t/font_2009600_07r9regf6vmw.eot');
-	  src: url('https://at.alicdn.com/t/font_2009600_07r9regf6vmw.eot?#iefix') format('embedded-opentype'),
-	  url('https://at.alicdn.com/t/font_2009600_07r9regf6vmw.woff2') format('woff2'),
-	  
-	  url('https://at.alicdn.com/t/font_2009600_07r9regf6vmw.woff') format('woff'),
-	  url('https://at.alicdn.com/t/font_2009600_07r9regf6vmw.ttf') format('truetype'),
-	  url('https://at.alicdn.com/t/font_2009600_07r9regf6vmw.svg#iconfont') format('svg');
-	}
+@font-face {
+  font-family: 'iconfont';  /* project id 2009600 */
+  src: url('https://at.alicdn.com/t/font_2009600_mn48d155e3.eot');
+  src: url('https://at.alicdn.com/t/font_2009600_mn48d155e3.eot?#iefix') format('embedded-opentype'),
+  url('https://at.alicdn.com/t/font_2009600_mn48d155e3.woff2') format('woff2'),
+  url('https://at.alicdn.com/t/font_2009600_mn48d155e3.woff') format('woff'),
+  url('https:/at.alicdn.com/t/font_2009600_mn48d155e3.ttf') format('truetype'),
+  url('https://at.alicdn.com/t/font_2009600_mn48d155e3.svg#iconfont') format('svg');
+}
 .iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-xuanzhong1:before {
+  content: "\e62d";
+}
+
+.icon-xuanzhong2:before {
+  content: "\e656";
+}
+
+.icon-selected:before {
+  content: "\e615";
+}
+
+.icon-weixuanzhong1:before {
+  content: "\e614";
+}
+
+.icon-xingzhuang6kaobei3-copy-copy:before {
+  content: "\e613";
+}
+
+.icon-radio-checked:before {
+  content: "\e63f";
 }
 
 .icon-huifu:before {
@@ -70,7 +92,7 @@
 }
 
 .icon-icon:before {
-  content: "\e50c";
+  content: "\e600";
 }
 
 .icon-liuyanguanli:before {
@@ -142,7 +164,7 @@
 }
 
 .icon-icon02:before {
-  content: "\e501";
+  content: "\e601";
 }
 
 .icon-huishouzhan1:before {
@@ -166,7 +188,7 @@
 }
 
 .icon-shangchuan:before {
-  content: "\e52c";
+  content: "\e602";
 }
 
 .icon-yonghu:before {
@@ -174,7 +196,7 @@
 }
 
 .icon-tongzhi1:before {
-  content: "\e602";
+  content: "\e603";
 }
 
 .icon-jingsong:before {
@@ -210,7 +232,7 @@
 }
 
 .icon-chushaixuanxiang:before {
-  content: "\e50d";
+  content: "\e606";
 }
 
 .icon-liuyanguanli1:before {
@@ -218,7 +240,7 @@
 }
 
 .icon-shanchu1:before {
-  content: "\e503";
+  content: "\e609";
 }
 
 .icon-huishouzhan3:before {
@@ -254,7 +276,7 @@
 }
 
 .icon-addApp:before {
-  content: "\e606";
+  content: "\e60b";
 }
 
 .icon-huishouzhan5:before {
@@ -262,11 +284,11 @@
 }
 
 .icon-add1:before {
-  content: "\e502";
+  content: "\e60e";
 }
 
 .icon-shoucang1:before {
-  content: "\e60b";
+  content: "\e60f";
 }
 
 .icon-canshutongji:before {
@@ -290,7 +312,7 @@
 }
 
 .icon-xiala-copy:before {
-  content: "\e508";
+  content: "\e610";
 }
 
 .icon-shangla:before {
@@ -298,6 +320,6 @@
 }
 
 .icon-xianxingshezhi:before {
-  content: "\e609";
+  content: "\e611";
 }
 

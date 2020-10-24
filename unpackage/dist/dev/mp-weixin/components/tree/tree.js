@@ -174,6 +174,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
 {
   props: {
     trees: {
@@ -197,7 +203,9 @@ __webpack_require__.r(__webpack_exports__);
       default: function _default() {
         return {
           label: 'name',
-          children: 'children' };
+          children: 'children',
+          multiple: true,
+          checkStrictly: false };
 
       } } },
 
@@ -210,6 +218,7 @@ __webpack_require__.r(__webpack_exports__);
       parent: [1],
       searchResult: [],
       party_current: 100000,
+      newCheckList: this.checkList,
       scrollLeft: 999,
       old: {
         scrollTop: 0 } };
@@ -220,46 +229,123 @@ __webpack_require__.r(__webpack_exports__);
     search: search },
 
   methods: {
+    //多选
     checkboxChange: function checkboxChange(item, index) {
+      var that = this;
+      var status = !that.tree[index].checked,temp = Object.assign({}, item);
+      if (item.checked) {//反选
+        if (this.props.checkStrictly) {
+          if (item.user) {
+            that.$set(that.tree[index], 'checked', false);
+            this.delUser(item.id);
+          } else
+          {
+            that.$set(that.tree[index], 'checked', false);
+            for (var index = 0, n = this.newCheckList.length; index < n; index++) {
+              var _temp = this.newCheckList[index];
+              if (_temp.id == item.id) {
+                this.newCheckList.splice(index, 1);
+                break;
+              }
+            }
+            this.delChild(item);
+          }
+        } else {
+          that.$set(that.tree[index], 'checked', false);
+          for (var index = 0, n = this.newCheckList.length; index < n; index++) {
+            var _temp2 = this.newCheckList[index];
+            if (_temp2.id == item.id) {
+              this.newCheckList.splice(index, 1);
+              break;
+            }
+          }
+        }
+
+      } else {//选中
+        that.newCheckList.push(item);
+        that.$set(that.tree[index], 'checked', true);
+        if (this.props.checkStrictly) {
+          this.chooseChild(item);
+        }
+      }
+      that.$emit('sendValue', that.newCheckList);
+    },
+    delUser: function delUser(id) {
+      var that = this;
+      for (var i = 0, len = that.newCheckList.length; i < len; i++) {
+        if (that.newCheckList[i].id === id) {
+          that.newCheckList.splice(i, 1);
+          console.log('删user');
+          return;
+        }
+      }
+    },
+
+    chooseChild: function chooseChild(arr) {
+      var that = this;
+      if (!arr.user) {
+        for (var i = 0, len = arr.children.length; i < len; i++) {
+          var item = arr.children[i];
+          item.checked = true;
+          that.newCheckList.push(item);
+          if (!item.user) {
+            this.chooseChild(item);
+          }
+        }
+      }
+      that.newCheckList = Array.from(new Set(that.newCheckList));
+    },
+    delChild: function delChild(arr) {
+      console.log(this.newCheckList);
+      if (!arr.user) {
+        for (var i = 0, len = arr.children.length; i < len; i++) {
+          var item = arr.children[i];
+          item.checked = false;
+          for (var index = 0, n = this.newCheckList.length; index < n; index++) {
+            var temp = this.newCheckList[index];
+            if (temp.id == item.id) {
+              this.newCheckList.splice(index, 1);
+              break;
+            }
+          }
+          if (!item.user) {
+            this.delChild(item);
+          }
+        }
+      }
+    },
+    //单选
+    checkbox: function checkbox(item, index) {var _this = this;
       var that = this;
       var status = !that.tree[index].checked;
       that.$set(that.tree[index], 'checked', status);
-      if (that.checkList.length <= 0) {
-        that.checkList.push(that.tree[index]);
-      } else {
-        var _status = false;
-        for (var i = 0, len = that.checkList.length; i < len; i++) {
-          if (that.checkList[i].id === that.tree[index].id) {
-            that.checkList.splice(i, 1);
-            _status = true;
-            break;
+      if (that.newCheckList.length <= 0) {
+        that.newCheckList = [that.tree[index]];
+      } else
+      if (that.newCheckList.length == 1) {
+        this.tree.forEach(function (item) {
+          if (item.id != _this.tree[index].id) {
+            item.checked = false;
           }
-        }
-        if (!_status) {
-          that.checkList.push(that.tree[index]);
+        });
+        that.newCheckList = [];
+        if (that.tree[index].checked) {
+          that.newCheckList.push(that.tree[index]);
         }
       }
-      that.$emit('sendValue', that.checkList);
+      that.$emit('sendValue', that.newCheckList);
     },
     scroll: function scroll(e) {
       console.log(e);
       this.old.scrollTop = e.detail.scrollTop;
     },
+    //到下一级
     toChildren: function toChildren(item) {
       var that = this;
       var children = that.props.children;
       if (!item.user && item[children].length > 0) {
         that.tree = item[children];
-        for (var i = 0, len = that.tree.length; i < len; i++) {
-          for (var j = 0, lens = that.checkList.length; j < lens; j++) {
-            if (that.checkList[j].id === that.tree[i].id) {
-              that.$set(that.tree[i], 'checked', true);
-              break;
-            } else {
-              that.$set(that.tree[i], 'checked', false);
-            }
-          }
-        }
+        that.checkIf();
         if (that.parent[0].id == item.id) {
 
         } else {
@@ -267,7 +353,24 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     },
-    confirmSearch: function confirmSearch(val) {var _this = this;
+    // 校验哪些选中了。单选
+    checkIf: function checkIf() {
+      var that = this;
+      console.log(this.newCheckList, 'new');
+      for (var i = 0, len = that.tree.length; i < len; i++) {
+        for (var j = 0, lens = that.newCheckList.length; j < lens; j++) {
+          if (that.newCheckList[j].id === that.tree[i].id) {
+            that.$set(that.tree[i], 'checked', true);
+            break;
+          } else
+          {
+            that.$set(that.tree[i], 'checked', false);
+          }
+        }
+      }
+    },
+    //搜索
+    confirmSearch: function confirmSearch(val) {var _this2 = this;
       this.searchResult = [];
       this.search(this.allData, val);
       this.isre = true;
@@ -276,7 +379,7 @@ __webpack_require__.r(__webpack_exports__);
         title: '正在查找' });
 
       setTimeout(function () {
-        _this.tree = _this.searchResult;
+        _this2.tree = _this2.searchResult;
         uni.hideLoading();
       }, 300);
     },
@@ -292,7 +395,9 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     },
-    backTree: function backTree(item, index) {var _this2 = this;
+    //返回其它层
+    backTree: function backTree(item, index) {var _this3 = this;
+      var that = this;
       if (index == -1) {
         this.tree = this.allData;
         this.parent.splice(1, 6666);
@@ -306,7 +411,7 @@ __webpack_require__.r(__webpack_exports__);
         if (this.parent.length - index > 2) {
           this.parent.forEach(function (item, i) {
             if (i > index) {
-              _this2.parent.splice(i, 6666);
+              _this3.parent.splice(i, 6666);
             }
           });
         } else if (index == this.parent.length - 1) {
@@ -316,6 +421,8 @@ __webpack_require__.r(__webpack_exports__);
         }
         this.tree = item[this.props.children];
       }
+      if (that.props.multiple) return;
+      that.checkIf();
     } } };exports.default = _default2;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

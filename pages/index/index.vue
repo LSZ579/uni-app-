@@ -136,7 +136,8 @@
 				prop: {
 					label: 'name',
 					children: 'children',
-					multiple:false
+					multiple:false,
+					checkStrictly:true
 				}
 			}
 		},
@@ -170,9 +171,10 @@
 				var currPage = pages[pages.length - 1]; //当前页面
 				var prevPage = pages[pages.length - 2]; //上一个页面
 				//h5写法
-				prevPage.query = this.checkList
+				//prevPage.query = this.checkList
+				
 				//小程序写法
-				//prevPage.$vm.query =this.checkList
+				prevPage.$vm.query =this.checkList
 				uni.navigateBack();
 			}
 		}

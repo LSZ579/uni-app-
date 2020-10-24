@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "选择发送对象",
-  "usingComponents": {
-    "tree": "/components/tree/tree"
-  }
-}

@@ -1,5 +1,5 @@
 <template>
-	<view style="background-color: #f5f5f5;height: 100vh;">
+	<view style="background-color: #f5f5f5;height: 100vh;overflow: hidden;">
 		<search v-if="searchIf" ref="sea" @confirm="confirmSearch" />
 		<view class="all">
 			<view class="sheng">
@@ -27,12 +27,9 @@
 							<text style="font-size: 18px;color: #b8b8b8;" v-else class="iconfont icon-weixuanzhong txt"></text>
 						</view>
 						<view class="checkbox" v-else @click.stop="checkbox(item,index)">
-							<!-- <text style="color: #0095F2;font-size: 18px;" v-if="item.checked" class="iconfont icon-xuanzhong txt colors"></text> -->
-							<text style="font-size: 18px;color: #b8b8b8;" v-if="item.checked" class="txt">
-								<svg t="1602944167153" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1158" width="20" height="20"><path d="M 511.998 65.7531 C 270.129 65.7531 74.0558 261.587 74.0558 503.166 C 74.0558 744.739 270.129 940.573 511.998 940.573 C 753.871 940.573 949.944 744.739 949.944 503.166 C 949.944 261.587 753.871 65.7531 511.998 65.7531 L 511.998 65.7531 Z M 748.233 391.328 L 452.01 687.186 C 446.167 693.022 436.031 692.359 429.364 685.701 L 409.509 665.87 C 409.509 665.865 409.505 665.865 409.505 665.861 L 276.786 533.308 C 270.125 526.651 270.125 515.863 276.786 509.206 L 312.981 473.056 C 319.646 466.398 330.447 466.398 337.112 473.056 L 441.431 577.247 L 687.907 331.075 C 693.75 325.239 703.886 325.902 710.548 332.561 L 746.746 368.71 C 753.412 375.364 754.076 385.492 748.233 391.328 L 748.233 391.328 Z" fill="#1e95ff" p-id="1159"></path></svg>
+							<text style="font-size: 18px;color: #0ec7ff;" v-if="item.checked" class="txt iconfont icon-selected">						
 							</text>
-							<text style="font-size: 18px;color: #b8b8b8;" v-else class="txt">
-								<svg t="1602944240536" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1299" width="20" height="20"><path d="M512 30.117647c265.035294 0 481.882353 216.847059 481.882353 481.882353s-216.847059 481.882353-481.882353 481.882353-481.882353-216.847059-481.882353-481.882353 216.847059-481.882353 481.882353-481.882353z" fill="#FFFFFF" p-id="1300"></path><path d="M512 1024c-283.105882 0-512-228.894118-512-512s228.894118-512 512-512 512 228.894118 512 512-228.894118 512-512 512z m0-963.764706c-246.964706 0-451.764706 204.8-451.764706 451.764706s204.8 451.764706 451.764706 451.764706c252.988235 0 451.764706-204.8 451.764706-451.764706s-198.776471-451.764706-451.764706-451.764706z" fill="#9fa8ad" p-id="1301"></path></svg>
+							<text style="font-size: 18px;color: #b8b8b8;" v-else class="txt iconfont icon-weixuanzhong1">						
 							</text>
 						</view>
 						<view class="person" v-if="item.user" >
@@ -75,7 +72,8 @@
 					return {
 						label: 'name',
 						children: 'children',
-						multiple:true
+						multiple:true,
+						checkStrictly:false
 					}
 				}
 			}
@@ -102,24 +100,87 @@
 			//多选
 			checkboxChange: function(item, index) {
 				var that = this;
-				let status = !that.tree[index].checked
-				that.$set(that.tree[index], 'checked', status)
-				if (that.newCheckList.length <= 0) {
-					that.newCheckList.push(that.tree[index])
-				} else {
-					let status = false
-					for (var i = 0, len = that.newCheckList.length; i < len; i++) {
-						if (that.newCheckList[i].id === that.tree[index].id) {
-							that.newCheckList.splice(i, 1)
-							status = true
-							break
+				let status = !that.tree[index].checked,temp=Object.assign({},item)
+				if(item.checked){//反选
+					if(this.props.checkStrictly){
+						if(item.user){
+							that.$set(that.tree[index], 'checked', false)
+							this.delUser(item.id)
+						}
+						else{
+							that.$set(that.tree[index], 'checked', false)
+							for(var index=0,n=this.newCheckList.length;index<n;index++){
+								let temp=this.newCheckList[index];
+								if(temp.id==item.id){
+									this.newCheckList.splice(index,1)
+									break
+								}
+							}
+							this.delChild(item)
+						}
+					}else{
+						that.$set(that.tree[index], 'checked', false)
+						for(var index=0,n=this.newCheckList.length;index<n;index++){
+							let temp=this.newCheckList[index];
+							if(temp.id==item.id){
+								this.newCheckList.splice(index,1)
+								break
+							}
 						}
 					}
-					if (!status) {
-						that.newCheckList.push(that.tree[index])
+					
+				}else{//选中
+					that.newCheckList.push(item)
+					that.$set(that.tree[index], 'checked', true)
+					if(this.props.checkStrictly){
+						 this.chooseChild(item)
 					}
 				}
 				that.$emit('sendValue', that.newCheckList)
+			},
+			delUser(id){
+			let that=this;
+					for (var i = 0, len = that.newCheckList.length; i < len; i++) {
+						if (that.newCheckList[i].id === id) {
+							that.newCheckList.splice(i, 1)
+							console.log('删user')
+							return
+						}
+					}
+			},
+		
+			chooseChild(arr){
+				let that=this;
+				if(!arr.user){
+					for(var i=0,len=arr.children.length;i<len;i++){
+						let item=arr.children[i];
+						item.checked=true
+						that.newCheckList.push(item)
+						if(!item.user){
+							 this.chooseChild(item)
+						}
+					}
+				}
+				that.newCheckList=Array.from(new Set(that.newCheckList))
+			},
+			delChild(arr){
+				console.log(this.newCheckList)
+				if(!arr.user){
+					for(var i=0,len=arr.children.length;i<len;i++){
+						let item=arr.children[i];
+						item.checked=false
+						for(var index=0,n=this.newCheckList.length;index<n;index++){
+							let temp=this.newCheckList[index];
+							if(temp.id==item.id){
+								this.newCheckList.splice(index,1)
+									break
+							}
+						}
+						if(!item.user){
+							this.delChild(item)
+						}
+					}
+				}
 			},
 			//单选
 			checkbox: function(item, index) {
@@ -163,12 +224,14 @@
 			// 校验哪些选中了。单选
 			checkIf(){
 				let that=this;
+				console.log(this.newCheckList,'new')
 				for (var i = 0, len = that.tree.length; i < len; i++) {
 					for (var j = 0, lens = that.newCheckList.length; j < lens; j++) {
 						if (that.newCheckList[j].id === that.tree[i].id) {
 							that.$set(that.tree[i], 'checked', true)
 							break
-						} else {
+						}
+						else{
 							that.$set(that.tree[i], 'checked', false)
 						}
 					}
@@ -324,5 +387,4 @@
 	}
 
 	 @import url("./css/icon.css");
-	//@import url("https://at.alicdn.com/t/font_2009600_07r9regf6vmw.css");
 </style>

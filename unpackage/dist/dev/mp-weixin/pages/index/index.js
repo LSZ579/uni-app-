@@ -271,7 +271,9 @@ __webpack_require__.r(__webpack_exports__);
       checkList: [],
       prop: {
         label: 'name',
-        children: 'children' } };
+        children: 'children',
+        multiple: false,
+        checkStrictly: true } };
 
 
   },
@@ -298,15 +300,17 @@ __webpack_require__.r(__webpack_exports__);
     //获取选中的
     confirm: function confirm(val) {
       this.checkList = val;
+      console.log(this.checkList, 588);
     },
     backConfirm: function backConfirm() {
       var pages = getCurrentPages();
       var currPage = pages[pages.length - 1]; //当前页面
       var prevPage = pages[pages.length - 2]; //上一个页面
       //h5写法
-      prevPage.query = this.checkList;
+      //prevPage.query = this.checkList
+
       //小程序写法
-      //prevPage.$vm.query =this.checkList
+      prevPage.$vm.query = this.checkList;
       uni.navigateBack();
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

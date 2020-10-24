@@ -1,4 +1,1 @@
-<view>
-	<tree vue-id="8dd740cc-1" checkList="{{checkList}}" props="{{prop}}" isCheck="{{true}}" trees="{{tree}}" data-event-opts="{{[['^sendValue',[['confirm']]]]}}" bind:sendValue="__e" bind:__l="__l"></tree>
-	<view class="btn box_sizing"><button class="sureBtn" type="primary" data-event-opts="{{[['tap',[['backConfirm',['$event']]]]]}}" bindtap="__e">确认</button></view>
-</view>
+<view><tree vue-id="8dd740cc-1" checkList="{{checkList}}" props="{{prop}}" isCheck="{{true}}" trees="{{tree}}" data-event-opts="{{[['^sendValue',[['confirm']]]]}}" bind:sendValue="__e" bind:__l="__l"></tree><view class="btn box_sizing"><button class="sureBtn" type="primary" data-event-opts="{{[['tap',[['backConfirm',['$event']]]]]}}" bindtap="__e">确认</button></view></view>
