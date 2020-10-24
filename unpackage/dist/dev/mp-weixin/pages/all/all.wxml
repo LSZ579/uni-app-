@@ -1,0 +1,1 @@
+<view><block wx:for="{{query}}" wx:for-item="item" wx:for-index="index" wx:key="index"><view style="margin:10px;"><text class="{{[index%2==0?'color':'']}}">{{item.name+"--"}}</text></view></block><button style="position:absolute;bottom:10px;width:100%;" type="primary" data-event-opts="{{[['tap',[['toChoose',['$0'],['query']]]]]}}" bindtap="__e">选择对象</button></view>

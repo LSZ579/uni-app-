@@ -1,0 +1,16 @@
+
+.box_sizing {
+	box-sizing: border-box;
+}
+.btn {
+	position: fixed;
+	bottom: 0;
+	padding: 10px;
+	background-color: #fff;
+	width: 100%;
+.sureBtn {
+		background-color: #f57a00;
+		color: #fff;
+}
+}
+
