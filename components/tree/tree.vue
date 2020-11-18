@@ -33,7 +33,7 @@
 							<text style="color: #b8b8b8;" v-else class="iconfont icon-weixuanzhong txt"></text>
 						</view>
 						<view class="checkbox" v-if="isCheck&&!props.multiple&&props.nodes&&item.user" @click.stop="checkbox(item,index)">
-								</text><text style="color: #0ec7ff;" v-if="item.checked" class="txt iconfont icon-selected">
+								<text style="color: #0ec7ff;" v-if="item.checked" class="txt iconfont icon-selected">
 								</text>
 								<text style="color: #b8b8b8;" v-else class="txt iconfont icon-weixuanzhong1">						
 								</text>
