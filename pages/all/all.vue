@@ -1,5 +1,6 @@
 <template>
-	<view>
+	<view class="o">
+		
 		<view v-for="(item,index) in query" style="margin: 10px;" :key="index">
 			<text  :class="index%2==0?'color':''">{{item.name}}--</text>
 		</view>
@@ -11,15 +12,7 @@
 	export default {
 		data() {
 			return {
-				query:[
-					{
-						id: 6666998,
-						name: "校长",
-						pid: "-1",
-						user: false,
-						checked:true
-						}
-				],
+				query:[],
 				detail:{
 					userIds:[],
 					organizeIds:[]
@@ -32,7 +25,6 @@
 		},
 		methods: {
 			toChoose(item){
-				
 				let items=this.isChoose.length>0?JSON.stringify(this.isChoose):JSON.stringify(this.query)
 				uni.navigateTo({
 					url:'../index/index?item='+items
@@ -45,5 +37,19 @@
 <style>
 .color{
 	color: #07BB07;
+}
+.o{
+	/* transform: scale(1.5); */
+}
+.are{
+	transform: scale(1);
+	position: relative;
+	background-color: #33333330;
+	height: 80vh;
+	width: 100%;
+	overflow: scroll;
+}
+.a{
+	background-color: #0077AA;
 }
 </style>
